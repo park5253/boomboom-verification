@@ -1,14 +1,38 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BoomBoom Future</title>
+  <title>결제 테스트 - 순대국 붐붐앱</title>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
 <body>
-  <h1>boomboomfuture.site</h1>
-  <p>이 사이트는 Pi Network 도메인 인증을 위해 생성되었습니다.</p>
-  <p>관리자: 박경호</p>
-  <p>슬로건: 꿈틀거리며 기다리는 자만이, 날아오를 자격이 있다.</p>
+  <h1>Pi 결제 테스트</h1>
+  <p>아래 버튼을 눌러 0.001 Pi 결제를 테스트해보세요!</p>
+
+  <button onclick="startPayment()">💰 결제하기 (0.001 Pi)</button>
+
+  <script>
+    function startPayment() {
+      const paymentData = {
+        amount: 0.001,
+        memo: "순대국 결제 테스트",
+        metadata: { purpose: "test" }
+      };
+
+      Pi.createPayment(paymentData, {
+        onReadyForServerApproval: function(paymentId) {
+          alert("서버 승인 준비 완료: " + paymentId);
+        },
+        onReadyForServerCompletion: function(paymentId, txid) {
+          alert("결제 완료! 트랜잭션 ID: " + txid);
+        },
+        onCancel: function(paymentId) {
+          alert("사용자가 결제를 취소했습니다.");
+        },
+        onError: function(error, paymentId) {
+          alert("에러 발생: " + error);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
